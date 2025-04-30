@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Chatbot</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f5f5f5;
+      }
+
+      .chat-container {
+        width: 400px;
+        height: 600px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+      }
+
+      .chat-header {
+        background-color: #4285f4;
+        color: white;
+        padding: 15px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        text-align: center;
+      }
+
+      .chat-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+      }
+
+      .message {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        max-width: 70%;
+        word-wrap: break-word;
+      }
+
+      .user-message {
+        background-color: #e1f5fe;
+        margin-left: auto;
+      }
+
+      .bot-message {
+        background-color: #f1f1f1;
+      }
+
+      .chat-input {
+        display: flex;
+        padding: 15px;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      .chat-input input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        outline: none;
+      }
+
+      .chat-input button {
+        margin-left: 10px;
+        padding: 10px 15px;
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .chat-input button:hover {
+        background-color: #3367d6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">
+        <h3>AI Assistant</h3>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="message bot-message">
+          Hello! I'm your AI assistant. How can I help you today?
+        </div>
+      </div>
+      <div class="chat-input">
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Type your message here..."
+          autocomplete="off"
+        />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <script>
+      // Generate a random user ID for this session
+      const userId = "user_" + Math.random().toString(36).substring(2, 10);
+
+      document
+        .getElementById("user-input")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
+        });
+
+      function sendMessage() {
+        const userInput = document.getElementById("user-input");
+        const message = userInput.value.trim();
+
+        if (message === "") return;
+
+        // Display user message
+        appendMessage(message, "user-message");
+        userInput.value = "";
+
+        // Show typing indicator
+        const typingIndicator = document.createElement("div");
+        typingIndicator.className = "message bot-message";
+        typingIndicator.id = "typing-indicator";
+        typingIndicator.textContent = "Typing...";
+        document.getElementById("chat-messages").appendChild(typingIndicator);
+
+        // Send message to server
+        fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: message,
+            userId: userId,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Remove typing indicator
+            document.getElementById("typing-indicator").remove();
+
+            // Display bot response
+            appendMessage(data.response, "bot-message");
+          })
+          .catch((error) => {
+            // Remove typing indicator
+            document.getElementById("typing-indicator").remove();
+
+            // Display error message
+            appendMessage(
+              "Sorry, something went wrong. Please try again later.",
+              "bot-message"
+            );
+            console.error("Error:", error);
+          });
+      }
+
+      function appendMessage(message, className) {
+        const messagesDiv = document.getElementById("chat-messages");
+        const messageElement = document.createElement("div");
+        messageElement.className = "message " + className;
+        messageElement.textContent = message;
+        messagesDiv.appendChild(messageElement);
+
+        // Scroll to the bottom
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+    </script>
+  </body>
+</html>

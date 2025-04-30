@@ -1,0 +1,27 @@
+version: "3.1"
+
+stories:
+  - story: greet path
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - story: ask capabilities path
+    steps:
+      - intent: ask_capabilities
+      - action: utter_capabilities
+
+  - story: help path
+    steps:
+      - intent: ask_help
+      - action: utter_help
+
+  - story: bot challenge path
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
+
+  - story: goodbye path
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye

@@ -1,0 +1,91 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hey
+      - hello
+      - hi
+      - hello there
+      - good morning
+      - good evening
+      - hey there
+      - hi there
+      - greetings
+      - what's up
+      - how are you
+
+  - intent: goodbye
+    examples: |
+      - bye
+      - goodbye
+      - see you around
+      - see you later
+      - see ya
+      - bye bye
+      - take care
+      - catch you later
+      - farewell
+      - have a good day
+
+  - intent: affirm
+    examples: |
+      - yes
+      - indeed
+      - of course
+      - that sounds good
+      - correct
+      - sure
+      - okay
+      - alright
+      - sounds good
+
+  - intent: deny
+    examples: |
+      - no
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not really
+      - nope
+      - not now
+      - I disagree
+
+  - intent: bot_challenge
+    examples: |
+      - are you a bot?
+      - are you a human?
+      - am I talking to a bot?
+      - am I talking to a human?
+      - what are you?
+      - who are you?
+      - are you real?
+      - are you AI?
+      - are you an assistant?
+
+  - intent: ask_capabilities
+    examples: |
+      - what can you do?
+      - what are your capabilities?
+      - help me understand what you can do
+      - what features do you have?
+      - how can you assist me?
+      - what tasks can you perform?
+      - what are you able to do?
+      - tell me about your functions
+      - what can you help me with?
+      - what services do you provide?
+
+  - intent: ask_help
+    examples: |
+      - I need help
+      - help me
+      - can you assist me?
+      - I'm stuck
+      - I don't know what to do
+      - give me some guidance
+      - help
+      - assist me
+      - support
+      - I need assistance

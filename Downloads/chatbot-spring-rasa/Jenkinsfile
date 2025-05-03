@@ -1,0 +1,15 @@
+pipeline {
+    agent any  // Run on any available Jenkins agent
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/Nandinii229/chatbot-spring-rasa.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+    }
+}
